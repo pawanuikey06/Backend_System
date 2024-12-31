@@ -1,4 +1,6 @@
 import mongoose,{Schema} from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
     {
@@ -50,4 +52,16 @@ const userSchema = new Schema(
     }
 )
 
+// do not use arrow function beacause they not have this
+//but here we want to reference use so use normal function
+userSchema.pre("save",async function(next){
+    if(!this.isModified("password")) return next();
+    this.password=bcrypt.hash(this.password,10);
+    next()
+
+})
+userSchema.methods.isPasswordCorrect =async function (password) {
+   return await bcrypt.compare(password,this.password)
+    
+}
 export const User=mongoose.model("User",userSchema);
