@@ -23,6 +23,10 @@ connectDB().then(()=>{
 app.on('error',()=>{
     console.log("ERROR: ",error);
 })
+
+
+
+
 // FIRST APPROACH
 /*import express from "express"
 const app =express()

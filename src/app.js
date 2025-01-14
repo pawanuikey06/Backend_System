@@ -22,7 +22,7 @@ import userRouter from "./routes/user.router.js";
 
 //routes declaration
 
-app.use('/users',userRouter)
+app.use('/api/v1/users',userRouter)
 
  
 
