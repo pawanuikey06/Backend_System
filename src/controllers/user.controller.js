@@ -16,9 +16,10 @@ const registerUser = asyncHandler(async (req, res) => {
     // check for user creation
     // return response
     // .if not created then return error
+    // console.log(req.body)
     const {fullName,email,username,password} = req.body
-    console.log("email",email);
-    console.log("username",username)
+    // console.log("email",email);
+    // console.log("username",username)
 
     //Validation
     // if(fullName===""){
@@ -33,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new APiError(400,"Enter Valid Email");
     }
     // Check wheather user already present or not
-    const existedUser=User.findOne({  //or operator can't be same
+    const existedUser=await User.findOne({  //or operator can't be same
         $or:[{username},{email}]
     })
     if(existedUser){
@@ -42,9 +43,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
     // checking images
     // path stored in multer with origional name
-
+    // console.log(req.files);
     const avtarLocalPath=req.files?.avtar[0]?.path;
-    const coverLocalPath =req.files?.coverImage[0]?.path;
+    // const coverLocalPath =req.files?.coverImage[0]?.path;
+
+    let coverLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage)&& req.files.coverImage.length>0){
+        coverLocalPath =req.files.coverImage[0].path;
+    }
 
     if(!avtarLocalPath){
         throw new APiError(400,"Avtar File is Required");
