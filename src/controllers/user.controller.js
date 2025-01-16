@@ -1,5 +1,6 @@
 import asyncHandler from '../utils/asyncHandler.js';  // Ensure asyncHandler is correct
 import APiError from "../utils/APiError.js";
+import ApiResponse from '../utils/ApiResponse.js';
 import validator from 'validator';
 import { User} from "../models/user.model.js"
 import uploadOnCloudinary from "../utils/cloudinary.js"
@@ -71,8 +72,17 @@ const registerUser = asyncHandler(async (req, res) => {
         username:username.toLowerCase()
 
     })
-    const createdUser =await User.findById(user._id);
+    const createdUser =await User.findById(user._id).select(
+        "-password -refreshToken"
+        //response me ye dono field nhi select krna h
+    );
 
+    if(!createdUser){
+        throw new APiError(500,"Something Went wrong While Registering the User")
+    }
+    return res.status(201).json(
+        new ApiResponse(200,createdUser,"User Registered SuccessFully")
+    );
 });
 
 export default registerUser;
