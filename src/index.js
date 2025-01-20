@@ -12,7 +12,7 @@ connectDB()
         console.log("MongoDB connected successfully");
 
         // Start the server
-        app.listen(process.env.PORT || 5000, () => {
+        app.listen(process.env.PORT || 3001, () => {
             console.log(`Server is running at port: ${process.env.PORT || 5000}`);
         });
     })
